@@ -1,5 +1,5 @@
 /* ============================================================
-   CutCut — editor JS: panels, timeline, playback, export
+   NythEdit — editor JS: panels, timeline, playback, export
    Demo logic only — wire to your backend where marked.
    ============================================================ */
 (function () {
