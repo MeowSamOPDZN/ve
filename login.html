@@ -8,24 +8,43 @@
   <link rel="stylesheet" href="main.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body class="auth-page">
 
   <!-- left brand panel -->
   <aside class="auth-side">
-    <a href="index.html" class="brand"><span class="brand-mark">✂</span> NythEdit</a>
+    <a href="index.html" class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      NythEdit
+    </a>
+    <div class="auth-cards">
+      <div class="mini-card">
+        <span class="mc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3l1.8 5.4 5.4 1.8-5.4 1.8L12 17.4l-1.8-5.4L4.8 10.2l5.4-1.8z"/></svg></span>
+        <div><b>AI clip generated</b><span>sports-opener.mp4 · 10s · 16:9</span></div>
+      </div>
+      <div class="mini-card">
+        <span class="mc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 11.5h5M7 15h8M15 11.5h2"/></svg></span>
+        <div><b>Captions synced</b><span>42 subtitles · English</span></div>
+      </div>
+      <div class="mini-card">
+        <span class="mc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M7 18a4.5 4.5 0 01-.4-9A6 6 0 0118 8.5 4.2 4.2 0 0117.5 18z"/><path d="M12 12v6M9.5 14.5L12 12l2.5 2.5"/></svg></span>
+        <div><b>Exported in 4K</b><span>product-launch.mp4 · ready to share</span></div>
+      </div>
+    </div>
     <div class="auth-quote">
       <p>"I cut a full product launch video on my lunch break. In a browser tab."</p>
       <cite>— Maya R., Content Lead</cite>
     </div>
-    <p style="position:relative;color:#7c8199;font-size:.82rem">Trusted by 200,000+ creators worldwide</p>
   </aside>
 
   <!-- form -->
   <main class="auth-form-wrap">
     <div class="auth-card">
-      <a href="index.html" class="brand" style="margin-bottom:26px"><span class="brand-mark">✂</span> NythEdit</a>
+      <a href="index.html" class="brand">
+        <span class="brand-mark"><svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+        NythEdit
+      </a>
       <h1 id="authTitle">Welcome back</h1>
       <p id="authSub">Log in to pick up right where you left off.</p>
 
@@ -41,17 +60,28 @@
       <form id="authForm" novalidate>
         <div class="field" id="nameField" style="display:none">
           <label for="name">Full name</label>
-          <input type="text" id="name" placeholder="Alex Carter" autocomplete="name" />
+          <div class="in-wrap">
+            <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.6"/><path d="M5 20a7 7 0 0114 0"/></svg>
+            <input type="text" id="name" placeholder="Alex Carter" autocomplete="name" />
+          </div>
         </div>
         <div class="field">
           <label for="email">Email</label>
-          <input type="email" id="email" placeholder="you@studio.com" autocomplete="email" required />
+          <div class="in-wrap">
+            <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg>
+            <input type="email" id="email" placeholder="you@studio.com" autocomplete="email" required />
+          </div>
         </div>
         <div class="field">
           <label for="password">Password</label>
-          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required />
+          <div class="in-wrap">
+            <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
+            <input type="password" id="password" placeholder="Minimum 6 characters" autocomplete="current-password" required />
+          </div>
         </div>
-        <button class="btn btn-dark btn-block btn-lg" type="submit" id="authSubmit">Log in →</button>
+        <button class="btn btn-brand btn-block btn-lg" type="submit" id="authSubmit">Log in
+          <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        </button>
       </form>
 
       <p class="auth-switch"><span id="switchText">New to NythEdit?</span> <button type="button" id="switchMode">Create an account</button></p>
