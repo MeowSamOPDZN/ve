@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CutCut — Edit video like a pro, in your browser</title>
+  <meta name="description" content="CutCut is the browser-based video editor with multi-track timeline, AI text-to-video, auto captions and 4K export." />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="site-nav">
+    <a href="index.html" class="brand"><span class="brand-mark">✂</span> CutCut</a>
+    <nav class="site-links" id="siteLinks">
+      <a href="#features">Features</a>
+      <a href="#ai">AI Studio</a>
+      <a href="#templates">Templates</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="login.html" class="btn btn-ghost">Sign in</a>
+      <a href="login.html" class="btn btn-dark">Continue →</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="hero-badge"><span class="dot"></span> New · AI Text-to-Video powered by Veo 3</span>
+      <h1>Edit video like a pro.<br /><span class="grad">Right in your browser.</span></h1>
+      <p class="sub">CutCut gives you a full multi-track editor, smart captions, effects and one-click 4K export — no downloads, no watermark on Pro.</p>
+      <div class="hero-cta">
+        <a href="login.html" class="btn btn-dark btn-lg">Continue →</a>
+        <a href="#features" class="btn btn-light btn-lg">See features</a>
+      </div>
+      <p class="hero-note">Free to start · No credit card required</p>
+    </div>
+
+    <div class="hero-mock reveal">
+      <div class="mock-window">
+        <div class="mock-bar"><i></i><i></i><i></i><span>cutcut.com/editor</span></div>
+        <div class="mock-body">
+          <div class="mock-rail"><b class="on"></b><b></b><b></b><b></b><b></b><b></b></div>
+          <div class="mock-stage">
+            <div class="mock-preview"></div>
+            <div class="mock-tl"><i></i><i></i><i></i></div>
+          </div>
+          <div class="mock-side"><b></b><b></b><b></b><b></b><b class="dark"></b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="wrap">
+      <div class="center reveal">
+        <p class="kicker">Features</p>
+        <h2 class="h2">Everything you need to cut,<br />nothing you don't</h2>
+        <p class="lead">A familiar pro-editor layout — media bin, preview, inspector and a buttery timeline — tuned for speed.</p>
+      </div>
+      <div class="feat-grid">
+        <div class="feat reveal"><div class="feat-ico" style="background:#f1e9fd">🎞</div><h3>Multi-track timeline</h3><p>Unlimited video, audio, caption and effect tracks with snapping, ripple delete and keyframes.</p></div>
+        <div class="feat reveal"><div class="feat-ico" style="background:#e6f7f6">✨</div><h3>AI text-to-video</h3><p>Describe the shot, pick a model and ratio — generate b-roll, openers and transitions in seconds.</p></div>
+        <div class="feat reveal"><div class="feat-ico" style="background:#fef3e8">💬</div><h3>Auto captions</h3><p>Word-perfect subtitles in 40+ languages, styled to match your brand in one click.</p></div>
+        <div class="feat reveal"><div class="feat-ico" style="background:#fdeef4">🎛</div><h3>Effects & transitions</h3><p>Sport effects, glitch packs, light leaks and 200+ transitions, drag-and-drop ready.</p></div>
+        <div class="feat reveal"><div class="feat-ico" style="background:#e8f3fe">📦</div><h3>Brand kit</h3><p>Save your fonts, colors, logos and intros — apply them to any project instantly.</p></div>
+        <div class="feat reveal"><div class="feat-ico" style="background:#eafbe9">⬆</div><h3>4K export</h3><p>Render up to 4K60 in the cloud and share a link or publish straight to socials.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI STUDIO -->
+  <section class="section" id="ai" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+    <div class="wrap">
+      <div class="ai-split">
+        <div class="reveal">
+          <p class="kicker">AI Studio</p>
+          <h2 class="h2">Type it. Watch it<br />become video.</h2>
+          <p class="lead">Describe the scene — athletes sprinting in cinematic slow motion, golden-hour product shots, anything. CutCut generates broadcast-ready clips you can drop straight onto the timeline.</p>
+          <ul class="checklist">
+            <li><span class="tick">✓</span> Frontier models including Google Veo 3</li>
+            <li><span class="tick">✓</span> Ratios for every platform — 16:9, 9:16, 1:1, 4:5, 3:2</li>
+            <li><span class="tick">✓</span> 5s, 10s and 15s durations with consistent style</li>
+          </ul>
+          <div style="margin-top:32px"><a href="login.html" class="btn btn-dark btn-lg">Try the AI Studio →</a></div>
+        </div>
+        <div class="prompt-card reveal">
+          <div class="prompt-head"><span class="spark">✦</span> Text to Video</div>
+          <div class="prompt-body">
+            <label>Description</label>
+            <div class="prompt-text">Create a high-energy sports video with a vibrant and dynamic atmosphere. Show athletes in intense motion running, jumping, training, and competing captured in cinematic slow motion and fast cuts.</div>
+            <label>Model</label>
+            <div class="prompt-text" style="margin-bottom:0">◉ &nbsp;Google Veo 3</div>
+            <label style="margin-top:14px;display:block">Ratio</label>
+            <div class="ratio-row">
+              <button class="ratio on" type="button">4:5</button>
+              <button class="ratio" type="button">1:1</button>
+              <button class="ratio" type="button">9:16</button>
+              <button class="ratio" type="button">16:9</button>
+              <button class="ratio" type="button">3:2</button>
+            </div>
+            <button class="btn btn-dark btn-block" type="button" onclick="location.href='login.html'">✦ Generate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEMPLATES -->
+  <section class="section" id="templates">
+    <div class="wrap">
+      <div class="center reveal">
+        <p class="kicker">Templates</p>
+        <h2 class="h2">Start from something great</h2>
+        <p class="lead">Remix professionally designed templates — intros, reels, ads and explainers.</p>
+      </div>
+      <div class="tpl-row">
+        <div class="tpl reveal"><div class="tpl-art" style="background:linear-gradient(160deg,#7c3aed,#2b2350)"><span>Sport Hype Reel</span></div><small>0:15 · 9:16 · 2.1k uses</small></div>
+        <div class="tpl reveal"><div class="tpl-art" style="background:linear-gradient(160deg,#0ea5a4,#083f3e)"><span>Product Launch</span></div><small>0:30 · 16:9 · 1.4k uses</small></div>
+        <div class="tpl reveal"><div class="tpl-art" style="background:linear-gradient(160deg,#f59e0b,#7c2d12)"><span>Travel Vlog Intro</span></div><small>0:08 · 16:9 · 3.8k uses</small></div>
+        <div class="tpl reveal"><div class="tpl-art" style="background:linear-gradient(160deg,#ec4899,#4c0519)"><span>Podcast Promo</span></div><small>0:20 · 1:1 · 960 uses</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="pricing" style="background:#fff;border-top:1px solid var(--line)">
+    <div class="wrap">
+      <div class="center reveal">
+        <p class="kicker">Pricing</p>
+        <h2 class="h2">Simple plans, serious output</h2>
+        <p class="lead">Start free. Upgrade when you need 4K, AI credits and team seats.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price reveal">
+          <h3>Starter</h3><div class="amt">$0<small> / forever</small></div>
+          <ul><li>720p export with watermark</li><li>3 projects</li><li>100+ templates</li><li>5 AI credits / month</li></ul>
+          <a href="login.html" class="btn btn-light btn-block">Continue free</a>
+        </div>
+        <div class="price hot reveal">
+          <span class="tag">MOST POPULAR</span>
+          <h3>Pro</h3><div class="amt">$12<small> / month</small></div>
+          <ul><li>4K60 export, no watermark</li><li>Unlimited projects</li><li>Brand kit + 200+ effects</li><li>120 AI credits / month</li><li>Priority rendering</li></ul>
+          <a href="login.html" class="btn btn-dark btn-block">Go Pro →</a>
+        </div>
+        <div class="price reveal">
+          <h3>Team</h3><div class="amt">$29<small> / month</small></div>
+          <ul><li>Everything in Pro</li><li>5 seats included</li><li>Shared brand kit & assets</li><li>Review & approval flow</li></ul>
+          <a href="login.html" class="btn btn-light btn-block">Talk to sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="wrap">
+      <div class="cta-banner reveal">
+        <h2>Your next video is<br />one click away.</h2>
+        <p>Join 200,000+ creators cutting faster with CutCut. Free to start — no credit card required.</p>
+        <a href="login.html" class="btn btn-light btn-lg">Continue →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site">
+    <div class="foot-grid">
+      <div>
+        <a href="index.html" class="brand" style="margin-bottom:16px"><span class="brand-mark">✂</span> CutCut</a>
+        <p style="color:var(--muted);font-size:.9rem;max-width:260px;margin-top:14px">The browser-based video editor for creators, teams and brands.</p>
+      </div>
+      <div><h4>Product</h4><ul><li><a href="#features">Features</a></li><li><a href="#ai">AI Studio</a></li><li><a href="#templates">Templates</a></li><li><a href="#pricing">Pricing</a></li></ul></div>
+      <div><h4>Resources</h4><ul><li><a href="#">Tutorials</a></li><li><a href="#">Blog</a></li><li><a href="#">Help center</a></li><li><a href="#">Keyboard shortcuts</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li><li><a href="#">Privacy</a></li></ul></div>
+    </div>
+    <div class="foot-note"><span>© 2026 CutCut. All rights reserved.</span><span>Made for creators, by creators.</span></div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>
