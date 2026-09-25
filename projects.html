@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Projects — CutCut</title>
-  <meta name="description" content="Your CutCut video projects." />
+  <title>My Projects — NythEdit</title>
+  <meta name="description" content="Your NythEdit video projects." />
   <link rel="stylesheet" href="css/main.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,7 +14,7 @@
 
   <!-- top bar -->
   <header class="topbar-app">
-    <a href="index.html" class="brand"><span class="brand-mark">✂</span> CutCut</a>
+    <a href="index.html" class="brand"><span class="brand-mark">✂</span> NythEdit</a>
     <div class="search">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       <input type="text" id="projSearch" placeholder="Search projects…" />
@@ -93,7 +93,7 @@
       render(on ? on.dataset.f : 'all', e.target.value);
     });
     document.getElementById('avatar').onclick = () => {
-      if (confirm('Log out of CutCut?')) { localStorage.removeItem('cutcut_user'); location.href = 'login.html'; }
+      if (confirm('Log out of NythEdit?')) { localStorage.removeItem('nythedit_user'); location.href = 'login.html'; }
     };
   </script>
 </body>
