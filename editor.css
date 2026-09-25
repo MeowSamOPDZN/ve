@@ -1,190 +1,252 @@
-/* ============================================================
-   NythEdit — editor styles
-   ============================================================ */
-.editor-body{height:100vh;overflow:hidden;background:#f4f5f9;display:flex;flex-direction:column}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Editor — NythEdit</title>
+  <meta name="description" content="NythEdit video editor — multi-track timeline, AI studio and real export." />
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="editor.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="editor-body">
 
-/* ---------- top bar ---------- */
-.ed-top{
-  height:58px;flex:0 0 58px;background:#fff;border-bottom:1px solid var(--line);
-  display:flex;align-items:center;gap:14px;padding:0 16px;z-index:30;
-}
-.ed-back{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;font-size:1rem}
-.ed-back:hover{background:#f1f3f9}
-.ed-title{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.92rem}
-.ed-title .pencil{color:var(--muted);cursor:pointer;border:0;background:none;font-size:.9rem}
-.ed-title .pencil:hover{color:var(--ink)}
-.ed-saved{font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:6px}
-.ed-spacer{flex:1}
-.ed-top .avatar{width:32px;height:32px;font-size:.78rem}
+  <!-- TOP BAR -->
+  <header class="ed-top">
+    <button class="ed-back" id="backBtn" title="Back to projects">
+      <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H5M11 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="ed-title">
+      <span id="projName">Untitled project</span>
+      <button class="pencil" id="renameBtn" title="Rename project">
+        <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4.2-1L20 7.2a2.05 2.05 0 00-2.9-2.9L5.5 16.2z"/><path d="M14.5 6.5l3 3"/></svg>
+      </button>
+    </div>
+    <span class="ed-saved" id="savedInd">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
+      <span id="savedTxt">Saved</span>
+    </span>
+    <div class="ed-spacer"></div>
+    <div class="mobile-toggles">
+      <button class="mt-btn" id="mediaToggle" aria-label="Toggle media panel">
+        <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+        <span>Media</span>
+      </button>
+      <button class="mt-btn" id="sideToggle" aria-label="Toggle AI panel">
+        <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l1.8 5.4 5.4 1.8-5.4 1.8L12 17.4l-1.8-5.4L4.8 10.2l5.4-1.8z"/></svg>
+        <span>AI Studio</span>
+      </button>
+    </div>
+    <div class="avatar" id="avatarBtn" title="Account">S</div>
+    <button class="btn btn-light" id="shareBtn">
+      <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+      <span class="txt">Share</span>
+    </button>
+    <button class="btn btn-brand" id="exportBtn">
+      <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+      <span class="txt">Export</span>
+    </button>
+  </header>
 
-/* ---------- workspace layout ---------- */
-.ed-work{flex:1;display:flex;min-height:0}
+  <div class="drawer-scrim" id="drawerScrim"></div>
 
-/* icon rail */
-.ed-rail{
-  width:78px;flex:0 0 78px;background:#fff;border-right:1px solid var(--line);
-  display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px;overflow-y:auto;
-}
-.rail-btn{
-  width:62px;padding:9px 0 7px;border:0;background:none;border-radius:12px;cursor:pointer;
-  display:flex;flex-direction:column;align-items:center;gap:4px;color:#5b6072;font-size:.64rem;font-weight:600;
-}
-.rail-btn svg{width:21px;height:21px}
-.rail-btn:hover{background:#f1f3f9;color:var(--ink)}
-.rail-btn.on{background:#eef0f6;color:var(--ink)}
-.rail-sep{width:40px;height:1px;background:var(--line);margin:8px 0}
-.rail-btn.bottom{margin-top:auto}
+  <!-- WORKSPACE -->
+  <div class="ed-work">
 
-/* media panel */
-.ed-media{
-  width:296px;flex:0 0 296px;background:#fff;border-right:1px solid var(--line);
-  display:flex;flex-direction:column;min-height:0;
-}
-.media-tabs{display:flex;gap:4px;padding:12px 14px 0;border-bottom:1px solid var(--line-soft)}
-.media-tab{border:0;background:none;padding:9px 12px;font-size:.84rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;display:flex;align-items:center;gap:6px}
-.media-tab.on{color:var(--ink);border-bottom-color:var(--ink)}
-.media-search{display:flex;gap:8px;padding:12px 14px}
-.media-search .box{flex:1;display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:#f7f8fc}
-.media-search input{border:0;background:none;outline:none;font-size:.84rem;width:100%;font-family:inherit}
-.media-search .filter-btn{width:38px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;color:var(--muted)}
-.media-grid{flex:1;overflow-y:auto;padding:4px 14px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}
-.media-card{border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid var(--line);transition:transform .18s,box-shadow .18s;background:#fff}
-.media-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
-.media-thumb{aspect-ratio:4/3;position:relative;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.8rem}
-.media-thumb .dur{position:absolute;right:7px;bottom:7px;background:rgba(10,12,20,.72);font-size:.66rem;padding:2px 8px;border-radius:6px;font-weight:600}
-.media-card.import .media-thumb{background:#f1f3f9;color:var(--muted);font-size:1.6rem;border:2px dashed var(--line)}
-.media-name{font-size:.72rem;padding:8px 10px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.media-empty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:.84rem;padding:30px 10px}
+    <!-- icon rail -->
+    <nav class="ed-rail" id="rail" aria-label="Tools">
+      <button class="rail-btn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>Home</button>
+      <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>Media</button>
+      <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6h14M5 12h14M5 18h9"/></svg>Text</button>
+      <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l1.8 5.4 5.4 1.8-5.4 1.8L12 17.4l-1.8-5.4L4.8 10.2l5.4-1.8z"/></svg>Effects</button>
+      <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>Trans.</button>
+      <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3s6 6.6 6 11a6 6 0 01-12 0c0-4.4 6-11 6-11z"/></svg>Brand</button>
+      <div class="rail-sep"></div>
+      <div class="rail-foot">
+        <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.6a2.5 2.5 0 014.3 1.7c0 1.6-2.4 2-2.4 3.2"/><path d="M12 17h.01"/></svg>Help</button>
+        <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.8M12 18.4v2.8M2.8 12h2.8M18.4 12h2.8M5.2 5.2l2 2M16.8 16.8l2 2M18.8 5.2l-2 2M7.2 16.8l-2 2"/></svg>Settings</button>
+      </div>
+    </nav>
 
-/* stage */
-.ed-stage{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0;background:#eef0f5}
-.ed-preview{flex:1;display:flex;align-items:center;justify-content:center;padding:18px;min-height:0}
-.preview-frame{
-  position:relative;background:#0c0e14;border-radius:14px;overflow:hidden;
-  aspect-ratio:16/9;max-width:100%;max-height:100%;width:min(100%,calc((100vh - 480px)*1.78));
-  box-shadow:0 20px 60px rgba(10,14,30,.25);
-}
-/* stylised "video": running track scene */
-.track-scene{position:absolute;inset:0;
-  background:
-    radial-gradient(120% 90% at 50% 0%, #f7d9c4 0%, #e8b48f 34%, transparent 35%),
-    linear-gradient(180deg,#c96f4a 0%,#b45a38 46%,#8f3d26 47%,#a34a2e 100%);
-}
-.track-scene::before{ /* lane lines in perspective */
-  content:'';position:absolute;inset:0;
-  background:
-    repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,255,255,.85) 46px 52px);
-  transform:perspective(500px) rotateX(38deg) scale(1.6);
-  transform-origin:bottom;opacity:.85;
-  mask-image:linear-gradient(180deg,transparent 30%,#000 62%);
-  -webkit-mask-image:linear-gradient(180deg,transparent 30%,#000 62%);
-}
-.track-scene::after{ /* runner silhouette */
-  content:'';position:absolute;left:50%;top:34%;width:90px;height:150px;transform:translateX(-30%);
-  background:radial-gradient(closest-side,#3a2c26 62%,transparent 63%) 50% 0/34px 34px no-repeat,
-             linear-gradient(#3a2c26,#3a2c26) 50% 30%/16px 70px no-repeat,
-             linear-gradient(#3a2c26,#3a2c26) 38% 78%/12px 52px no-repeat,
-             linear-gradient(#3a2c26,#3a2c26) 62% 78%/12px 52px no-repeat;
-  opacity:.9;
-}
-.preview-cap{
-  position:absolute;left:50%;bottom:9%;transform:translateX(-50%);
-  background:rgba(8,10,16,.78);color:#fff;font-size:clamp(.7rem,1.6vw,.95rem);font-weight:500;
-  padding:7px 18px;border-radius:8px;white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis;
-}
-.preview-badge{position:absolute;top:12px;left:12px;background:rgba(8,10,16,.6);color:#fff;font-size:.68rem;font-weight:600;padding:5px 12px;border-radius:8px}
-/* transport */
-.ed-transport{
-  flex:0 0 60px;background:#fff;border-top:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;gap:18px;padding:0 20px;
-}
-.tcode{font-size:.8rem;font-weight:600;background:#f1f3f9;border-radius:8px;padding:7px 14px;font-variant-numeric:tabular-nums;color:var(--ink-2)}
-.tcode.dim{color:var(--muted)}
-.tplay{width:42px;height:42px;border-radius:50%;background:var(--brand);color:#fff;border:0;cursor:pointer;font-size:1rem;display:grid;place-items:center}
-.tplay:hover{transform:scale(1.06)}
-.ticons{display:flex;gap:6px;margin-left:12px}
-.ticon{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--muted);display:grid;place-items:center;font-size:.95rem}
-.ticon:hover{color:var(--ink);border-color:var(--ink)}
+    <!-- media panel -->
+    <aside class="ed-media" id="mediaPanel">
+      <button class="drawer-close" data-close="mediaPanel" aria-label="Close panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="media-tabs" id="mediaTabs">
+        <button class="media-tab on" data-tab="all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>All</button>
+        <button class="media-tab" data-tab="video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>Video</button>
+        <button class="media-tab" data-tab="image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4.5 18l5-5 3 3 3-3 4 4"/></svg>Photos</button>
+        <button class="media-tab" data-tab="audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V6l10-2v11"/><circle cx="7" cy="18" r="2.4"/><circle cx="17" cy="15" r="2.4"/></svg>Audio</button>
+      </div>
+      <div class="media-search">
+        <div class="box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+          <input type="search" id="mediaSearch" placeholder="Search media" aria-label="Search media" />
+        </div>
+        <button class="filter-btn" id="importBtn" title="Import files">
+          <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>
+        </button>
+      </div>
+      <div class="media-grid" id="mediaGrid"></div>
+    </aside>
 
-/* right panel */
-.ed-side{
-  width:300px;flex:0 0 300px;background:#fff;border-left:1px solid var(--line);
-  display:flex;flex-direction:column;min-height:0;overflow-y:auto;
-}
-.side-tabs{display:flex;gap:6px;padding:12px 16px 0;border-bottom:1px solid var(--line-soft)}
-.side-tab{border:1px solid var(--line);background:#f7f8fc;border-radius:9px 9px 0 0;border-bottom:0;padding:9px 13px;font-size:.78rem;font-weight:600;color:var(--muted);cursor:pointer;display:flex;gap:6px;align-items:center}
-.side-tab.on{background:#fff;color:var(--ink)}
-.side-body{padding:18px 16px;display:flex;flex-direction:column;gap:16px}
-.side-body label{font-size:.76rem;font-weight:700;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;display:block}
-.side-desc{width:100%;min-height:120px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.84rem;font-family:inherit;resize:vertical;background:#fbfcfe;color:var(--ink-2);outline:none}
-.side-desc:focus{border-color:var(--ink)}
-.side-select{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:12px;font-size:.88rem;font-family:inherit;background:#fff;outline:none;cursor:pointer}
-.pill-row{display:flex;gap:8px;flex-wrap:wrap}
-.ratio-pill{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 13px;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--ink-2)}
-.ratio-pill.on{background:var(--brand);color:#fff;border-color:var(--brand)}
-.credit-row{display:flex;align-items:center;justify-content:space-between;background:#f7f8fc;border:1px solid var(--line-soft);border-radius:12px;padding:11px 14px;font-size:.84rem;color:var(--ink-2)}
-.credit-row b{color:var(--ink)}
-.gen-btn{width:100%;padding:14px;border:0;border-radius:12px;background:var(--brand);color:#fff;font-weight:700;font-size:.92rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
-.gen-btn:hover{box-shadow:0 10px 26px rgba(21,26,40,.35)}
-.gen-btn:disabled{opacity:.65;cursor:wait}
-.side-hint{font-size:.76rem;color:var(--muted);background:#f7f8fc;border-radius:10px;padding:10px 13px}
+    <!-- stage -->
+    <section class="ed-stage">
+      <div class="ed-preview">
+        <div class="preview-frame" id="previewFrame">
+          <canvas id="previewCanvas" width="1280" height="720"></canvas>
+          <span class="preview-badge" id="previewBadge">PREVIEW</span>
+        </div>
+      </div>
+      <div class="ed-transport">
+        <span class="tcode" id="timeNow">0:00</span>
+        <button class="ticon" id="prevBtn" title="Back 5 seconds">
+          <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 5v14"/><path d="M19 5.5v13L9.5 12z" fill="currentColor" stroke="none"/></svg>
+        </button>
+        <button class="tplay" id="playBtn" title="Play / pause (Space)"></button>
+        <button class="ticon" id="loopBtn" title="Loop">
+          <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+        </button>
+        <button class="ticon" id="fsBtn" title="Fullscreen preview">
+          <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+        </button>
+        <span class="tcode dim" id="timeDur">0:00</span>
+      </div>
+    </section>
 
-/* ---------- timeline ---------- */
-.ed-timeline{flex:0 0 296px;background:#fff;border-top:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
-.tl-tools{display:flex;align-items:center;gap:6px;padding:8px 16px;border-bottom:1px solid var(--line-soft)}
-.tool-btn{width:32px;height:32px;border-radius:8px;border:0;background:none;cursor:pointer;color:#5b6072;display:grid;place-items:center;font-size:.95rem}
-.tool-btn:hover{background:#f1f3f9;color:var(--ink)}
-.tl-tools .sp{flex:1}
-.zoom{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem}
-.zoom input{width:110px;accent-color:#151a28}
-.tl-main{flex:1;display:flex;min-height:0}
-.tl-heads{flex:0 0 118px;border-right:1px solid var(--line);background:#fafbfe;overflow:hidden}
-.tl-ruler-space{height:30px;border-bottom:1px solid var(--line-soft)}
-.tl-head{height:44px;border-bottom:1px solid var(--line-soft);display:flex;align-items:center;gap:4px;padding:0 10px}
-.tl-head.audio{height:56px}
-.tl-head button{border:0;background:none;cursor:pointer;color:#9aa0b4;font-size:.85rem;width:26px;height:26px;border-radius:7px;display:grid;place-items:center}
-.tl-head button:hover{background:#e9ecf4;color:var(--ink)}
-.tl-head button.off{color:#d3d7e3}
-.tl-scroll{flex:1;overflow:auto;position:relative;background:#fff}
-.tl-inner{position:relative;min-height:100%}
-.tl-ruler{position:sticky;top:0;z-index:5;height:30px;background:#fafbfe;border-bottom:1px solid var(--line-soft)}
-.tick{position:absolute;top:0;bottom:0;border-left:1px solid #dfe2ec;font-size:.64rem;color:var(--muted);padding:5px 0 0 5px;font-variant-numeric:tabular-nums}
-.tl-lane{position:relative;height:44px;border-bottom:1px solid var(--line-soft)}
-.tl-lane.audio{height:56px}
-.clip{position:absolute;top:7px;bottom:7px;border-radius:8px;display:flex;align-items:center;gap:8px;padding:0 12px;font-size:.72rem;font-weight:600;color:#fff;overflow:hidden;white-space:nowrap;cursor:grab;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
-.clip small{font-weight:500;opacity:.85;font-size:.66rem}
-.clip.fx{background:linear-gradient(135deg,#c084fc,#a855f7)}
-.clip.cap{background:linear-gradient(135deg,#5eead4,#14b8a6);color:#063f3c}
-.clip.vid{background:repeating-linear-gradient(90deg,#3b4a6b 0 34px,#2c3a58 34px 68px);border:1px solid #22304d}
-.clip.aud{background:#eef0f6;box-shadow:inset 0 0 0 1px var(--line);color:var(--ink-2);top:6px;bottom:6px}
-.clip .wave{position:absolute;inset:6px 10px;display:flex;align-items:center;gap:2px;pointer-events:none}
-.clip .wave i{flex:1;background:#9aa3bd;border-radius:2px;min-width:2px;opacity:.75}
-.clip .clabel{position:relative;z-index:1;display:flex;align-items:center;gap:8px}
-.playhead{position:absolute;top:0;bottom:0;width:2px;background:#ef2b6a;z-index:8;pointer-events:none}
-.playhead::before{content:'';position:absolute;top:0;left:-6px;border:7px solid transparent;border-top:9px solid #ef2b6a}
-.tl-lane .clip{user-select:none}
+    <!-- right panel -->
+    <aside class="ed-side" id="sidePanel">
+      <button class="drawer-close" data-close="sidePanel" aria-label="Close panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="side-tabs" id="sideTabs">
+        <button class="side-tab" data-sidetab="assistant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a8 8 0 01-8 8H4l2-3a8 8 0 1115-5z"/></svg>Assistant</button>
+        <button class="side-tab on" data-sidetab="t2v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>Text-to-Video</button>
+        <button class="side-tab" data-sidetab="img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4.5 18l5-5 3 3 3-3 4 4"/></svg>Image</button>
+      </div>
 
-/* export modal */
-.modal-veil{position:fixed;inset:0;background:rgba(12,15,25,.5);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
-.modal-veil.show{display:flex}
-.modal{background:#fff;border-radius:20px;padding:34px;width:100%;max-width:420px;box-shadow:var(--shadow-lg)}
-.modal h2{font-size:1.3rem;letter-spacing:-.02em;margin-bottom:8px}
-.modal p{color:var(--muted);font-size:.9rem;margin-bottom:20px}
-.exp-row{display:flex;gap:10px;margin-bottom:14px}
-.exp-opt{flex:1;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;cursor:pointer;font-size:.82rem;font-weight:600;color:var(--ink-2)}
-.exp-opt.on{border-color:var(--ink);background:#f7f8fc;color:var(--ink)}
-.exp-bar{height:8px;background:#eef0f6;border-radius:99px;overflow:hidden;margin:18px 0 8px;display:none}
-.exp-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7c3aed,#0ea5a4);border-radius:99px;transition:width .2s}
-.exp-status{font-size:.82rem;color:var(--muted);min-height:22px}
+      <!-- assistant pane -->
+      <div class="side-body" id="pane-assistant" hidden>
+        <div>
+          <label>Assistant</label>
+          <div class="asst-log" id="asstLog"></div>
+        </div>
+        <form id="asstForm" class="asst-form">
+          <input id="asstInput" placeholder='Try "add caption hello" or "help"' autocomplete="off" />
+          <button type="submit" aria-label="Send">
+            <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+      </div>
 
-/* responsive */
-@media(max-width:1180px){
-  .ed-media{width:240px;flex-basis:240px}
-  .ed-side{width:260px;flex-basis:260px}
-}
-@media(max-width:960px){
-  .ed-rail{display:none}
-  .ed-media{display:none}
-  .ed-side{display:none}
-  .preview-frame{width:100%}
-}
+      <!-- generate pane (t2v + img share it) -->
+      <div class="side-body" id="pane-generate">
+        <div>
+          <label for="genDesc" id="genDescLabel">Description</label>
+          <textarea class="side-desc" id="genDesc" placeholder="Describe the clip you want to generate…">A drone shot gliding over a packed stadium at golden hour, athletes warming up on the track, cinematic</textarea>
+        </div>
+        <div id="modelRow">
+          <label for="modelSel">Model</label>
+          <select class="side-select" id="modelSel">
+            <option>Google Veo 3</option>
+            <option>Google Veo 3 Fast</option>
+            <option>Runway Gen-4</option>
+            <option>Pika 2.1</option>
+          </select>
+        </div>
+        <div>
+          <label>Ratio</label>
+          <div class="pill-row" id="ratioRow">
+            <button class="ratio-pill" data-ar="1:1">1:1</button>
+            <button class="ratio-pill on" data-ar="16:9">16:9</button>
+            <button class="ratio-pill" data-ar="9:16">9:16</button>
+            <button class="ratio-pill" data-ar="4:5">4:5</button>
+            <button class="ratio-pill" data-ar="3:2">3:2</button>
+          </div>
+        </div>
+        <div id="durRowWrap">
+          <label>Duration</label>
+          <div class="pill-row" id="durRow">
+            <button class="ratio-pill on" data-d="5">5s</button>
+            <button class="ratio-pill" data-d="10">10s</button>
+            <button class="ratio-pill" data-d="15">15s</button>
+          </div>
+        </div>
+        <details class="prov" id="provBox">
+          <summary>Provider settings <span class="prov-state" id="provState">not configured</span></summary>
+          <label for="provUrl">API endpoint (POST)</label>
+          <input id="provUrl" placeholder="https://your-provider.com/v1/videos" />
+          <label for="provKey">API key</label>
+          <input id="provKey" type="password" placeholder="Stored only in this browser" />
+          <label for="provModel">Model id (sent as "model")</label>
+          <input id="provModel" placeholder="veo-3" />
+          <button class="btn btn-light btn-block" id="provSave" type="button" style="margin-top:10px">Save provider</button>
+          <p class="prov-note">Generate sends <b>{prompt, model, aspect_ratio, duration_seconds}</b> as JSON with a Bearer key, and expects <b>{video_url}</b> (or {url}) back. The key never leaves your browser except to your endpoint.</p>
+        </details>
+        <button class="gen-btn" id="genBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.8 5.4 5.4 1.8-5.4 1.8L12 17.4l-1.8-5.4L4.8 10.2l5.4-1.8z"/></svg>
+          <span id="genLabel">Generate video</span>
+        </button>
+        <div class="side-hint" id="genHint" style="display:none"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- TIMELINE -->
+  <section class="ed-timeline">
+    <div class="tl-tools" id="tlTools">
+      <button class="tool-btn" id="undoBtn" title="Undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h9a7 7 0 017 7v1"/></svg></button>
+      <button class="tool-btn" id="redoBtn" title="Redo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14l5-5-5-5"/><path d="M20 9h-9a7 7 0 00-7 7v1"/></svg></button>
+      <button class="tool-btn" id="splitBtn" title="Split at playhead"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="6" cy="7" r="2.5"/><circle cx="6" cy="17" r="2.5"/><path d="M8.2 8.6L20 20M8.2 15.4L20 4"/></svg></button>
+      <button class="tool-btn" id="dupBtn" title="Duplicate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 14V5a2 2 0 012-2h9"/></svg></button>
+      <button class="tool-btn" id="delBtn" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 4h4M7 7l1 13a2 2 0 002 2h4a2 2 0 002-2l1-13"/><path d="M10 11v6M14 11v6"/></svg></button>
+      <button class="tool-btn on" id="magnetBtn" title="Snapping"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 4h4v7a3 3 0 006 0V4h4v7a7 7 0 01-14 0z"/><path d="M5 8.5h4M15 8.5h4"/></svg></button>
+      <div class="sp"></div>
+      <div class="zoom">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21M8 11h6"/></svg>
+        <input type="range" id="zoomRange" min="40" max="260" value="110" aria-label="Timeline zoom" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21M11 8v6M8 11h6"/></svg>
+      </div>
+    </div>
+    <div class="tl-main">
+      <div class="tl-heads" id="tlHeads"></div>
+      <div class="tl-scroll" id="tlScroll">
+        <div class="tl-inner" id="tlInner" style="width:1320px">
+          <div class="tl-ruler" id="tlRuler"></div>
+          <div id="tlLanes"></div>
+          <div class="playhead" id="playhead" style="left:0"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPORT MODAL -->
+  <div class="modal-veil" id="exportModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Export video">
+      <h2>Export video</h2>
+      <p>Renders your timeline in real time and downloads a <b>.webm</b> file with audio.</p>
+      <div class="exp-row" id="expRow">
+        <button class="exp-opt on">720p</button>
+        <button class="exp-opt">1080p</button>
+      </div>
+      <div class="exp-bar" id="expBar"><i id="expFill"></i></div>
+      <div class="exp-status" id="expStatus"></div>
+      <div style="display:flex;gap:10px;margin-top:18px">
+        <button class="btn btn-light" id="expCancel" style="flex:1">Cancel</button>
+        <button class="btn btn-brand" id="expStart" style="flex:2">Start export</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- hidden file input + custom context menu -->
+  <input type="file" id="fileInput" accept="video/*,audio/*,image/*" multiple hidden />
+  <div class="ctxmenu" id="ctxMenu" role="menu"></div>
+
+  <div class="toast" id="toast"></div>
+  <script src="main.js"></script>
+  <script src="editor.js"></script>
+</body>
+</html>
