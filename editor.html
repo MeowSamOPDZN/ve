@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editor — CutCut</title>
+  <meta name="description" content="CutCut editor — multi-track timeline, AI generation and instant preview." />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/editor.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="editor-body" data-guard>
+
+  <!-- ======= TOP BAR ======= -->
+  <header class="ed-top">
+    <button class="ed-back" id="backBtn" title="Back to projects">←</button>
+    <div class="ed-title">
+      <span id="projName">happy-happy.mp4</span>
+      <button class="pencil" id="renameBtn" title="Rename">✎</button>
+    </div>
+    <span class="ed-saved">💾 <span id="savedAt">Last saved 16 minutes ago</span></span>
+    <div class="ed-spacer"></div>
+    <div class="avatar" id="avatar" title="Account">A</div>
+    <button class="btn btn-light" id="shareBtn" style="padding:9px 20px">⤴ Share</button>
+    <button class="btn btn-dark" id="exportBtn" style="padding:9px 22px">Export</button>
+  </header>
+
+  <!-- ======= WORKSPACE ======= -->
+  <div class="ed-work">
+
+    <!-- icon rail -->
+    <nav class="ed-rail" aria-label="Editor sections">
+      <button class="rail-btn" data-rail="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>Home</button>
+      <button class="rail-btn" data-rail="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Projects</button>
+      <button class="rail-btn" data-rail="templates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Templates</button>
+      <button class="rail-btn" data-rail="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3s6 6.6 6 11a6 6 0 01-12 0c0-4.4 6-11 6-11z"/></svg>Brand Kit</button>
+      <button class="rail-btn" data-rail="assets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>Assets</button>
+      <button class="rail-btn on" data-rail="audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V6l10-2v11"/><circle cx="7" cy="18" r="2.4"/><circle cx="17" cy="15" r="2.4"/></svg>Audio</button>
+      <div class="rail-sep"></div>
+      <button class="rail-btn bottom" data-rail="help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.6a2.5 2.5 0 015 .4c0 1.6-2.6 2-2.6 3.6"/><circle cx="12" cy="17.2" r=".6" fill="currentColor"/></svg>Help</button>
+      <button class="rail-btn" data-rail="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5 5l2.2 2.2M16.8 16.8L19 19M19 5l-2.2 2.2M7.2 16.8L5 19"/></svg>Settings</button>
+      <div class="avatar" style="width:34px;height:34px;font-size:.75rem;margin:8px 0 4px" id="avatarRail">A</div>
+    </nav>
+
+    <!-- media panel -->
+    <aside class="ed-media">
+      <div class="media-tabs" id="mediaTabs">
+        <button class="media-tab on" data-mtab="media">▦ Media</button>
+        <button class="media-tab" data-mtab="text">T Text</button>
+        <button class="media-tab" data-mtab="effects">✦ Effects</button>
+        <button class="media-tab" data-mtab="trans">⇄ Transitions</button>
+      </div>
+      <div class="media-search">
+        <div class="box">🔍 <input type="text" id="mediaSearch" placeholder="Search" /></div>
+        <button class="filter-btn" title="Filter">⧩</button>
+      </div>
+      <div class="media-grid" id="mediaGrid"><!-- filled by JS --></div>
+    </aside>
+
+    <!-- stage -->
+    <section class="ed-stage">
+      <div class="ed-preview">
+        <div class="preview-frame">
+          <div class="track-scene"></div>
+          <span class="preview-badge">Preview · 1080p</span>
+          <div class="preview-cap" id="previewCap">Come on superman say it stupid line</div>
+        </div>
+      </div>
+      <div class="ed-transport">
+        <span class="tcode" id="tcNow">00:00:00:42</span>
+        <span class="tcode dim" id="tcEnd">00:13:52:27</span>
+        <button class="tplay" id="playBtn" title="Play / pause (Space)">▶</button>
+        <div class="ticons">
+          <button class="ticon" id="prevEdit" title="Previous edit">⏮</button>
+          <button class="ticon" id="loopBtn" title="Loop">🔁</button>
+          <button class="ticon" id="fullBtn" title="Fullscreen preview">⛶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- right panel -->
+    <aside class="ed-side">
+      <div class="side-tabs" id="sideTabs">
+        <button class="side-tab on" data-stab="assistant">✦ Assistant</button>
+        <button class="side-tab" data-stab="t2v">🎬 Text to Video</button>
+        <button class="side-tab" data-stab="i2v">🖼 Image</button>
+      </div>
+      <div class="side-body">
+        <div data-spanel="assistant">
+          <div class="side-hint">👋 Hi! I'm your editing assistant. Describe what you want — "make the intro punchier", "add captions", "slow-mo the sprint" — and I'll do it.</div>
+          <div style="height:12px"></div>
+          <label>Quick actions</label>
+          <div class="pill-row">
+            <button class="ratio-pill" data-qa="Auto captions">Auto captions</button>
+            <button class="ratio-pill" data-qa="Remove silences">Remove silences</button>
+            <button class="ratio-pill" data-qa="Color match">Color match</button>
+          </div>
+        </div>
+        <div data-spanel="t2v" hidden>
+          <label>Description</label>
+          <textarea class="side-desc" id="t2vPrompt">Create a high-energy sports video with a vibrant and dynamic atmosphere. Show athletes in intense motion running, jumping, training, and competing captured in cinematic slow motion and fast cuts. Use bold, saturated colors, dramatic lighting, and strong contrast.</textarea>
+          <div style="height:14px"></div>
+          <label>Model</label>
+          <select class="side-select" id="modelSel">
+            <option>◉ &nbsp;Google Veo 3</option>
+            <option>◉ &nbsp;Runway Gen-4</option>
+            <option>◉ &nbsp;Luma Dream Machine</option>
+            <option>◉ &nbsp;Pika 2.0</option>
+          </select>
+          <div style="height:14px"></div>
+          <label>Ratio</label>
+          <div class="pill-row" id="ratioRow">
+            <button class="ratio-pill on">4:5</button><button class="ratio-pill">1:1</button><button class="ratio-pill">9:16</button><button class="ratio-pill">16:9</button><button class="ratio-pill">3:2</button>
+          </div>
+          <div style="height:14px"></div>
+          <label>Duration</label>
+          <select class="side-select"><option>⏱ &nbsp;10s</option><option>⏱ &nbsp;5s</option><option>⏱ &nbsp;15s</option></select>
+          <div style="height:14px"></div>
+          <div class="credit-row"><span>My Credits</span><b>⚡ 24</b></div>
+          <div style="height:6px"></div>
+          <button class="gen-btn" id="genBtn">✦ Generate</button>
+        </div>
+        <div data-spanel="i2v" hidden>
+          <div class="side-hint">🖼 Upload a still image and animate it — camera pushes, parallax and subtle motion, straight onto the timeline.</div>
+          <div style="height:12px"></div>
+          <button class="gen-btn" id="imgBtn" style="background:#fff;color:var(--ink);border:1px dashed var(--line)">＋ Upload image</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ======= TIMELINE ======= -->
+  <section class="ed-timeline">
+    <div class="tl-tools">
+      <button class="tool-btn" title="Undo">↺</button>
+      <button class="tool-btn" title="Redo">↻</button>
+      <button class="tool-btn" title="Split">✂</button>
+      <button class="tool-btn" title="Duplicate">⧉</button>
+      <button class="tool-btn" title="Delete">🗑</button>
+      <span class="sp"></span>
+      <button class="tool-btn" title="Snapping">🧲</button>
+      <button class="tool-btn" title="Link clips">🔗</button>
+      <button class="tool-btn" title="Mute all">🔇</button>
+      <div class="zoom">🔍− <input type="range" id="zoomRange" min="1" max="10" step="0.5" value="3.2" /> ＋</div>
+      <button class="tool-btn" id="zoomFit" title="Zoom to fit">⛶</button>
+    </div>
+    <div class="tl-main">
+      <div class="tl-heads" id="tlHeads">
+        <div class="tl-ruler-space"></div>
+        <div class="tl-head"><button title="Lock">🔒</button><button title="Show/hide">👁</button><button title="Mute">🔈</button></div>
+        <div class="tl-head"><button title="Lock">🔒</button><button title="Show/hide">👁</button><button title="Mute">🔈</button></div>
+        <div class="tl-head"><button title="Lock">🔒</button><button title="Show/hide">👁</button><button title="Mute">🔈</button></div>
+        <div class="tl-head"><button title="Lock">🔒</button><button title="Show/hide">👁</button><button title="Mute">🔈</button></div>
+        <div class="tl-head audio"><button title="Lock">🔒</button><button title="Show/hide">👁</button><button title="Mute">🔈</button></div>
+      </div>
+      <div class="tl-scroll" id="tlScroll">
+        <div class="tl-inner" id="tlInner">
+          <div class="tl-ruler" id="tlRuler"></div>
+          <div class="tl-lane" data-lane="fx">
+            <div class="clip fx" data-start="8"   data-dur="95">✦ <span>Sport Effects</span></div>
+            <div class="clip fx" data-start="205" data-dur="95">✦ <span>Sport Effects</span></div>
+          </div>
+          <div class="tl-lane" data-lane="cap">
+            <div class="clip cap" data-start="52"  data-dur="42" data-cap="Come on superman say it stupid line"><span>Come on superman say it stupid line</span></div>
+            <div class="clip cap" data-start="100" data-dur="44" data-cap="Don't suppose you could convince your lov"><span>Don't suppose you could convince your lov</span></div>
+            <div class="clip cap" data-start="150" data-dur="42" data-cap="She said: 'It's not now or never'"><span>She said: "It's not now or never"</span></div>
+            <div class="clip cap" data-start="198" data-dur="44" data-cap="Superman, don't hold back jus"><span>Superman, don't hold back jus</span></div>
+          </div>
+          <div class="tl-lane" data-lane="vid">
+            <div class="clip vid" data-start="58" data-dur="120"><span>🎞 happy-happy.mp4</span></div>
+          </div>
+          <div class="tl-lane" data-lane="vid2">
+            <div class="clip vid" data-start="172" data-dur="64"><span>🎞 b-roll.mp4</span></div>
+          </div>
+          <div class="tl-lane audio" data-lane="aud">
+            <div class="clip aud" data-start="0" data-dur="360">
+              <div class="wave" id="wave"></div>
+              <span class="clabel">♪ Happy Song.mp3</span>
+            </div>
+          </div>
+          <div class="playhead" id="playhead" style="left:134px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- export modal -->
+  <div class="modal-veil" id="exportModal">
+    <div class="modal">
+      <h2>Export video</h2>
+      <p>Render in the cloud — keep editing, we'll notify you when it's ready.</p>
+      <div class="exp-row" id="resRow">
+        <div class="exp-opt" data-res="720p">720p</div>
+        <div class="exp-opt on" data-res="1080p">1080p</div>
+        <div class="exp-opt" data-res="4K">4K</div>
+      </div>
+      <div class="exp-bar" id="expBar"><i id="expFill"></i></div>
+      <div class="exp-status" id="expStatus"></div>
+      <div style="display:flex;gap:10px;margin-top:18px">
+        <button class="btn btn-light" id="expCancel" style="flex:1">Cancel</button>
+        <button class="btn btn-dark" id="expStart" style="flex:2">Start export</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/main.js"></script>
+  <script src="js/editor.js"></script>
+</body>
+</html>
