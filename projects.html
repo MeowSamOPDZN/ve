@@ -8,93 +8,42 @@
   <link rel="stylesheet" href="main.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <!-- top bar -->
   <header class="topbar-app">
-    <a href="index.html" class="brand"><span class="brand-mark">✂</span> NythEdit</a>
+    <a href="index.html" class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      NythEdit
+    </a>
     <div class="search">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input type="text" id="projSearch" placeholder="Search projects…" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+      <input type="search" id="searchInput" placeholder="Search projects…" aria-label="Search projects" />
     </div>
-    <div style="flex:1"></div>
-    <button class="btn btn-dark" id="newProjBtn">＋ New Project</button>
-    <div class="avatar" id="avatar" title="Account">A</div>
+    <div class="ed-spacer"></div>
+    <a href="editor.html?demo=1" class="btn btn-brand" id="newBtn">
+      <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      New project
+    </a>
+    <div class="avatar" id="avatarBtn" title="Account">S</div>
   </header>
 
-  <!-- heading -->
-  <div class="proj-head">
-    <div>
-      <h1>My Projects</h1>
-      <p id="projCount">6 projects · 2.4 GB used</p>
-    </div>
+  <div class="proj-hero">
+    <h1>My projects</h1>
+    <p>Pick up where you left off, or start something new.</p>
   </div>
 
-  <!-- filters -->
-  <div class="chips" id="filterChips">
+  <div class="chips" id="chips">
     <button class="chip on" data-f="all">All</button>
-    <button class="chip" data-f="video">Videos</button>
+    <button class="chip" data-f="video">Video</button>
+    <button class="chip" data-f="short">Shorts</button>
     <button class="chip" data-f="draft">Drafts</button>
   </div>
 
-  <!-- grid -->
-  <main class="proj-grid-app" id="projGrid">
-    <div class="proj-card new" id="newCard">
-      <div class="proj-thumb">＋</div>
-      <div class="proj-meta"><h3>Create new project</h3><p>Start from scratch or a template</p></div>
-    </div>
-  </main>
+  <main class="proj-grid-app" id="projGrid"></main>
 
   <div class="toast" id="toast"></div>
   <script src="main.js"></script>
-  <script>
-    // ---- projects page data & rendering (demo content) ----
-    const PROJECTS = [
-      { name:'happy-happy.mp4',   meta:'Edited 16 min ago · 1080p', dur:'13:52', f:'video', g:'linear-gradient(135deg,#c96f4a,#7c3aed)', label:'HH' },
-      { name:'product-launch.mp4',meta:'Edited 2 h ago · 4K',        dur:'02:14', f:'video', g:'linear-gradient(135deg,#0ea5a4,#1e3a5f)', label:'PL' },
-      { name:'travel-vlog-draft', meta:'Edited yesterday · Draft',  dur:'08:41', f:'draft', g:'linear-gradient(135deg,#f59e0b,#b45309)', label:'TV' },
-      { name:'podcast-promo.mp4', meta:'Edited 3 days ago · 1080p',  dur:'01:02', f:'video', g:'linear-gradient(135deg,#ec4899,#4c0519)', label:'PP' },
-      { name:'wedding-teaser',    meta:'Edited last week · Draft',   dur:'00:45', f:'draft', g:'linear-gradient(135deg,#6366f1,#1e1b4b)', label:'WT' },
-      { name:'fitness-ad.mp4',    meta:'Edited 2 weeks ago · 4K',     dur:'00:30', f:'video', g:'linear-gradient(135deg,#22c55e,#14532d)', label:'FA' },
-    ];
-    const grid = document.getElementById('projGrid');
-    const newCard = document.getElementById('newCard');
-
-    function openEditor(name){
-      location.href = 'editor.html?name=' + encodeURIComponent(name || 'Untitled project');
-    }
-    document.getElementById('newProjBtn').onclick = () => openEditor();
-    newCard.onclick = () => openEditor();
-
-    function render(filter='all', q=''){
-      grid.querySelectorAll('.proj-card:not(.new)').forEach(c => c.remove());
-      PROJECTS
-        .filter(p => (filter==='all' || p.f===filter) && p.name.toLowerCase().includes(q.toLowerCase()))
-        .forEach(p => {
-          const el = document.createElement('div');
-          el.className = 'proj-card';
-          el.innerHTML = `<div class="proj-thumb" style="background:${p.g}">${p.label}<span class="dur">${p.dur}</span></div>
-                          <div class="proj-meta"><h3>${p.name}</h3><p>${p.meta}</p></div>`;
-          el.onclick = () => openEditor(p.name);
-          grid.appendChild(el);
-        });
-    }
-    render();
-    document.getElementById('filterChips').addEventListener('click', e => {
-      const b = e.target.closest('.chip'); if(!b) return;
-      document.querySelectorAll('#filterChips .chip').forEach(c => c.classList.remove('on'));
-      b.classList.add('on');
-      render(b.dataset.f, document.getElementById('projSearch').value);
-    });
-    document.getElementById('projSearch').addEventListener('input', e => {
-      const on = document.querySelector('#filterChips .chip.on');
-      render(on ? on.dataset.f : 'all', e.target.value);
-    });
-    document.getElementById('avatar').onclick = () => {
-      if (confirm('Log out of NythEdit?')) { localStorage.removeItem('nythedit_user'); location.href = 'login.html'; }
-    };
-  </script>
 </body>
 </html>
