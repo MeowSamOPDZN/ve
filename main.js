@@ -1,5 +1,5 @@
 /* ============================================================
-   CutCut — shared JS: toast, nav, auth (demo), guards
+   NythEdit — shared JS: toast, nav, auth (demo), guards
    ============================================================ */
 (function () {
   'use strict';
@@ -48,8 +48,8 @@
   });
 
   /* ---------- auth (demo, localStorage) ---------- */
-  const USER_KEY = 'cutcut_user';
-  window.CutCut = {
+  const USER_KEY = 'nythedit_user';
+  window.NythEdit = {
     user() {
       try { return JSON.parse(localStorage.getItem(USER_KEY)); } catch (e) { return null; }
     },
@@ -67,13 +67,13 @@
   const path = location.pathname.split('/').pop() || 'index.html';
   const guarded = document.body.hasAttribute('data-guard') ||
                   path === 'projects.html' || path === 'editor.html';
-  if (guarded && !window.CutCut.user() && !location.search.includes('demo=1')) {
+  if (guarded && !window.NythEdit.user() && !location.search.includes('demo=1')) {
     location.href = 'login.html';
     return;
   }
 
   // paint avatar initials everywhere
-  document.querySelectorAll('.avatar').forEach((a) => { a.textContent = window.CutCut.initial(); });
+  document.querySelectorAll('.avatar').forEach((a) => { a.textContent = window.NythEdit.initial(); });
 
   /* ---------- login / signup form ---------- */
   const authForm = document.getElementById('authForm');
@@ -94,7 +94,7 @@
       sub.textContent = signup ? 'Start cutting in under a minute.' : 'Log in to pick up right where you left off.';
       submit.innerHTML = signup ? 'Create account →' : 'Log in →';
       nameField.style.display = signup ? 'block' : 'none';
-      switchText.textContent = signup ? 'Already have an account?' : 'New to CutCut?';
+      switchText.textContent = signup ? 'Already have an account?' : 'New to NythEdit?';
       switchMode.textContent = signup ? 'Log in' : 'Create an account';
       err.style.display = 'none';
     });
@@ -115,14 +115,14 @@
       submit.disabled = true;
       submit.textContent = 'Please wait…';
       setTimeout(() => {
-        window.CutCut.login(name || email.split('@')[0], email);
+        window.NythEdit.login(name || email.split('@')[0], email);
         toast(mode === 'signup' ? 'Account created — welcome!' : 'Welcome back!');
         setTimeout(() => location.href = 'projects.html', 500);
       }, 700);
     });
 
     document.getElementById('googleBtn').addEventListener('click', () => {
-      window.CutCut.login('Creator', 'creator@gmail.com');
+      window.NythEdit.login('Creator', 'creator@gmail.com');
       toast('Signed in with Google (demo)');
       setTimeout(() => location.href = 'projects.html', 500);
     });
