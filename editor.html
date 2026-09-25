@@ -2,208 +2,248 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Editor — NythEdit</title>
-  <meta name="description" content="NythEdit editor — multi-track timeline, AI generation and instant preview." />
+  <meta name="description" content="NythEdit video editor — multi-track timeline, AI studio and real export." />
   <link rel="stylesheet" href="main.css" />
   <link rel="stylesheet" href="editor.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 </head>
-<body class="editor-body" data-guard>
+<body class="editor-body">
 
-  <!-- ======= TOP BAR ======= -->
+  <!-- TOP BAR -->
   <header class="ed-top">
-    <button class="ed-back" id="backBtn" title="Back to projects">←</button>
+    <button class="ed-back" id="backBtn" title="Back to projects">
+      <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H5M11 6l-6 6 6 6"/></svg>
+    </button>
     <div class="ed-title">
-      <span id="projName">happy-happy.mp4</span>
-      <button class="pencil" id="renameBtn" title="Rename">✎</button>
+      <span id="projName">Untitled project</span>
+      <button class="pencil" id="renameBtn" title="Rename project">
+        <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4.2-1L20 7.2a2.05 2.05 0 00-2.9-2.9L5.5 16.2z"/><path d="M14.5 6.5l3 3"/></svg>
+      </button>
     </div>
-    <span class="ed-saved">💾 <span id="savedAt">Last saved 16 minutes ago</span></span>
+    <span class="ed-saved" id="savedInd">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
+      <span id="savedTxt">Saved</span>
+    </span>
     <div class="ed-spacer"></div>
-    <div class="avatar" id="avatar" title="Account">A</div>
-    <button class="btn btn-light" id="shareBtn" style="padding:9px 20px">⤴ Share</button>
-    <button class="btn btn-dark" id="exportBtn" style="padding:9px 22px">Export</button>
+    <div class="mobile-toggles">
+      <button class="mt-btn" id="mediaToggle" aria-label="Toggle media panel">
+        <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+        <span>Media</span>
+      </button>
+      <button class="mt-btn" id="sideToggle" aria-label="Toggle AI panel">
+        <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l1.8 5.4 5.4 1.8-5.4 1.8L12 17.4l-1.8-5.4L4.8 10.2l5.4-1.8z"/></svg>
+        <span>AI Studio</span>
+      </button>
+    </div>
+    <div class="avatar" id="avatarBtn" title="Account">S</div>
+    <button class="btn btn-light" id="shareBtn">
+      <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+      <span class="txt">Share</span>
+    </button>
+    <button class="btn btn-brand" id="exportBtn">
+      <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+      <span class="txt">Export</span>
+    </button>
   </header>
 
-  <!-- ======= WORKSPACE ======= -->
+  <div class="drawer-scrim" id="drawerScrim"></div>
+
+  <!-- WORKSPACE -->
   <div class="ed-work">
 
     <!-- icon rail -->
-    <nav class="ed-rail" aria-label="Editor sections">
-      <button class="rail-btn" data-rail="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>Home</button>
-      <button class="rail-btn" data-rail="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Projects</button>
-      <button class="rail-btn" data-rail="templates"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Templates</button>
-      <button class="rail-btn" data-rail="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3s6 6.6 6 11a6 6 0 01-12 0c0-4.4 6-11 6-11z"/></svg>Brand Kit</button>
-      <button class="rail-btn" data-rail="assets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>Assets</button>
-      <button class="rail-btn on" data-rail="audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V6l10-2v11"/><circle cx="7" cy="18" r="2.4"/><circle cx="17" cy="15" r="2.4"/></svg>Audio</button>
+    <nav class="ed-rail" id="rail" aria-label="Tools">
+      <button class="rail-btn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>Home</button>
+      <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>Media</button>
+      <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6h14M5 12h14M5 18h9"/></svg>Text</button>
+      <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l1.8 5.4 5.4 1.8-5.4 1.8L12 17.4l-1.8-5.4L4.8 10.2l5.4-1.8z"/></svg>Effects</button>
+      <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>Trans.</button>
+      <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3s6 6.6 6 11a6 6 0 01-12 0c0-4.4 6-11 6-11z"/></svg>Brand</button>
       <div class="rail-sep"></div>
-      <button class="rail-btn bottom" data-rail="help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.6a2.5 2.5 0 015 .4c0 1.6-2.6 2-2.6 3.6"/><circle cx="12" cy="17.2" r=".6" fill="currentColor"/></svg>Help</button>
-      <button class="rail-btn" data-rail="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5 5l2.2 2.2M16.8 16.8L19 19M19 5l-2.2 2.2M7.2 16.8L5 19"/></svg>Settings</button>
-      <div class="avatar" style="width:34px;height:34px;font-size:.75rem;margin:8px 0 4px" id="avatarRail">A</div>
+      <div class="rail-foot">
+        <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.6a2.5 2.5 0 014.3 1.7c0 1.6-2.4 2-2.4 3.2"/><path d="M12 17h.01"/></svg>Help</button>
+        <button class="rail-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.8M12 18.4v2.8M2.8 12h2.8M18.4 12h2.8M5.2 5.2l2 2M16.8 16.8l2 2M18.8 5.2l-2 2M7.2 16.8l-2 2"/></svg>Settings</button>
+      </div>
     </nav>
 
     <!-- media panel -->
-    <aside class="ed-media">
+    <aside class="ed-media" id="mediaPanel">
+      <button class="drawer-close" data-close="mediaPanel" aria-label="Close panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
       <div class="media-tabs" id="mediaTabs">
-        <button class="media-tab on" data-mtab="media">▦ Media</button>
-        <button class="media-tab" data-mtab="text">T Text</button>
-        <button class="media-tab" data-mtab="effects">✦ Effects</button>
-        <button class="media-tab" data-mtab="trans">⇄ Transitions</button>
+        <button class="media-tab on" data-tab="all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>All</button>
+        <button class="media-tab" data-tab="video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>Video</button>
+        <button class="media-tab" data-tab="image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4.5 18l5-5 3 3 3-3 4 4"/></svg>Photos</button>
+        <button class="media-tab" data-tab="audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V6l10-2v11"/><circle cx="7" cy="18" r="2.4"/><circle cx="17" cy="15" r="2.4"/></svg>Audio</button>
       </div>
       <div class="media-search">
-        <div class="box">🔍 <input type="text" id="mediaSearch" placeholder="Search" /></div>
-        <button class="filter-btn" title="Filter">⧩</button>
+        <div class="box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+          <input type="search" id="mediaSearch" placeholder="Search media" aria-label="Search media" />
+        </div>
+        <button class="filter-btn" id="importBtn" title="Import files">
+          <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>
+        </button>
       </div>
-      <div class="media-grid" id="mediaGrid"><!-- filled by JS --></div>
+      <div class="media-grid" id="mediaGrid"></div>
     </aside>
 
     <!-- stage -->
     <section class="ed-stage">
       <div class="ed-preview">
-        <div class="preview-frame">
-          <div class="track-scene"></div>
-          <span class="preview-badge">Preview · 1080p</span>
-          <div class="preview-cap" id="previewCap">Come on superman say it stupid line</div>
+        <div class="preview-frame" id="previewFrame">
+          <canvas id="previewCanvas" width="1280" height="720"></canvas>
+          <span class="preview-badge" id="previewBadge">PREVIEW</span>
         </div>
       </div>
       <div class="ed-transport">
-        <span class="tcode" id="tcNow">00:00:00:42</span>
-        <span class="tcode dim" id="tcEnd">00:13:52:27</span>
-        <button class="tplay" id="playBtn" title="Play / pause (Space)">▶</button>
-        <div class="ticons">
-          <button class="ticon" id="prevEdit" title="Previous edit">⏮</button>
-          <button class="ticon" id="loopBtn" title="Loop">🔁</button>
-          <button class="ticon" id="fullBtn" title="Fullscreen preview">⛶</button>
-        </div>
+        <span class="tcode" id="timeNow">0:00</span>
+        <button class="ticon" id="prevBtn" title="Back 5 seconds">
+          <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 5v14"/><path d="M19 5.5v13L9.5 12z" fill="currentColor" stroke="none"/></svg>
+        </button>
+        <button class="tplay" id="playBtn" title="Play / pause (Space)"></button>
+        <button class="ticon" id="loopBtn" title="Loop">
+          <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+        </button>
+        <button class="ticon" id="fsBtn" title="Fullscreen preview">
+          <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+        </button>
+        <span class="tcode dim" id="timeDur">0:00</span>
       </div>
     </section>
 
     <!-- right panel -->
-    <aside class="ed-side">
+    <aside class="ed-side" id="sidePanel">
+      <button class="drawer-close" data-close="sidePanel" aria-label="Close panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
       <div class="side-tabs" id="sideTabs">
-        <button class="side-tab on" data-stab="assistant">✦ Assistant</button>
-        <button class="side-tab" data-stab="t2v">🎬 Text to Video</button>
-        <button class="side-tab" data-stab="i2v">🖼 Image</button>
+        <button class="side-tab" data-sidetab="assistant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a8 8 0 01-8 8H4l2-3a8 8 0 1115-5z"/></svg>Assistant</button>
+        <button class="side-tab on" data-sidetab="t2v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>Text-to-Video</button>
+        <button class="side-tab" data-sidetab="img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4.5 18l5-5 3 3 3-3 4 4"/></svg>Image</button>
       </div>
-      <div class="side-body">
-        <div data-spanel="assistant">
-          <div class="side-hint">👋 Hi! I'm your editing assistant. Describe what you want — "make the intro punchier", "add captions", "slow-mo the sprint" — and I'll do it.</div>
-          <div style="height:12px"></div>
-          <label>Quick actions</label>
-          <div class="pill-row">
-            <button class="ratio-pill" data-qa="Auto captions">Auto captions</button>
-            <button class="ratio-pill" data-qa="Remove silences">Remove silences</button>
-            <button class="ratio-pill" data-qa="Color match">Color match</button>
-          </div>
+
+      <!-- assistant pane -->
+      <div class="side-body" id="pane-assistant" hidden>
+        <div>
+          <label>Assistant</label>
+          <div class="asst-log" id="asstLog"></div>
         </div>
-        <div data-spanel="t2v" hidden>
-          <label>Description</label>
-          <textarea class="side-desc" id="t2vPrompt">Create a high-energy sports video with a vibrant and dynamic atmosphere. Show athletes in intense motion running, jumping, training, and competing captured in cinematic slow motion and fast cuts. Use bold, saturated colors, dramatic lighting, and strong contrast.</textarea>
-          <div style="height:14px"></div>
-          <label>Model</label>
+        <form id="asstForm" class="asst-form">
+          <input id="asstInput" placeholder='Try "add caption hello" or "help"' autocomplete="off" />
+          <button type="submit" aria-label="Send">
+            <svg class="i-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- generate pane (t2v + img share it) -->
+      <div class="side-body" id="pane-generate">
+        <div>
+          <label for="genDesc" id="genDescLabel">Description</label>
+          <textarea class="side-desc" id="genDesc" placeholder="Describe the clip you want to generate…">A drone shot gliding over a packed stadium at golden hour, athletes warming up on the track, cinematic</textarea>
+        </div>
+        <div id="modelRow">
+          <label for="modelSel">Model</label>
           <select class="side-select" id="modelSel">
-            <option>◉ &nbsp;Google Veo 3</option>
-            <option>◉ &nbsp;Runway Gen-4</option>
-            <option>◉ &nbsp;Luma Dream Machine</option>
-            <option>◉ &nbsp;Pika 2.0</option>
+            <option>Google Veo 3</option>
+            <option>Google Veo 3 Fast</option>
+            <option>Runway Gen-4</option>
+            <option>Pika 2.1</option>
           </select>
-          <div style="height:14px"></div>
+        </div>
+        <div>
           <label>Ratio</label>
           <div class="pill-row" id="ratioRow">
-            <button class="ratio-pill on">4:5</button><button class="ratio-pill">1:1</button><button class="ratio-pill">9:16</button><button class="ratio-pill">16:9</button><button class="ratio-pill">3:2</button>
+            <button class="ratio-pill" data-ar="1:1">1:1</button>
+            <button class="ratio-pill on" data-ar="16:9">16:9</button>
+            <button class="ratio-pill" data-ar="9:16">9:16</button>
+            <button class="ratio-pill" data-ar="4:5">4:5</button>
+            <button class="ratio-pill" data-ar="3:2">3:2</button>
           </div>
-          <div style="height:14px"></div>
+        </div>
+        <div id="durRowWrap">
           <label>Duration</label>
-          <select class="side-select"><option>⏱ &nbsp;10s</option><option>⏱ &nbsp;5s</option><option>⏱ &nbsp;15s</option></select>
-          <div style="height:14px"></div>
-          <div class="credit-row"><span>My Credits</span><b>⚡ 24</b></div>
-          <div style="height:6px"></div>
-          <button class="gen-btn" id="genBtn">✦ Generate</button>
+          <div class="pill-row" id="durRow">
+            <button class="ratio-pill on" data-d="5">5s</button>
+            <button class="ratio-pill" data-d="10">10s</button>
+            <button class="ratio-pill" data-d="15">15s</button>
+          </div>
         </div>
-        <div data-spanel="i2v" hidden>
-          <div class="side-hint">🖼 Upload a still image and animate it — camera pushes, parallax and subtle motion, straight onto the timeline.</div>
-          <div style="height:12px"></div>
-          <button class="gen-btn" id="imgBtn" style="background:#fff;color:var(--ink);border:1px dashed var(--line)">＋ Upload image</button>
-        </div>
+        <details class="prov" id="provBox">
+          <summary>Provider settings <span class="prov-state" id="provState">not configured</span></summary>
+          <label for="provUrl">API endpoint (POST)</label>
+          <input id="provUrl" placeholder="https://your-provider.com/v1/videos" />
+          <label for="provKey">API key</label>
+          <input id="provKey" type="password" placeholder="Stored only in this browser" />
+          <label for="provModel">Model id (sent as "model")</label>
+          <input id="provModel" placeholder="veo-3" />
+          <button class="btn btn-light btn-block" id="provSave" type="button" style="margin-top:10px">Save provider</button>
+          <p class="prov-note">Generate sends <b>{prompt, model, aspect_ratio, duration_seconds}</b> as JSON with a Bearer key, and expects <b>{video_url}</b> (or {url}) back. The key never leaves your browser except to your endpoint.</p>
+        </details>
+        <button class="gen-btn" id="genBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.8 5.4 5.4 1.8-5.4 1.8L12 17.4l-1.8-5.4L4.8 10.2l5.4-1.8z"/></svg>
+          <span id="genLabel">Generate video</span>
+        </button>
+        <div class="side-hint" id="genHint" style="display:none"></div>
       </div>
     </aside>
   </div>
 
-  <!-- ======= TIMELINE ======= -->
+  <!-- TIMELINE -->
   <section class="ed-timeline">
-    <div class="tl-tools">
-      <button class="tool-btn" title="Undo">↺</button>
-      <button class="tool-btn" title="Redo">↻</button>
-      <button class="tool-btn" title="Split">✂</button>
-      <button class="tool-btn" title="Duplicate">⧉</button>
-      <button class="tool-btn" title="Delete">🗑</button>
-      <span class="sp"></span>
-      <button class="tool-btn" title="Snapping">🧲</button>
-      <button class="tool-btn" title="Link clips">🔗</button>
-      <button class="tool-btn" title="Mute all">🔇</button>
-      <div class="zoom">🔍− <input type="range" id="zoomRange" min="1" max="10" step="0.5" value="3.2" /> ＋</div>
-      <button class="tool-btn" id="zoomFit" title="Zoom to fit">⛶</button>
+    <div class="tl-tools" id="tlTools">
+      <button class="tool-btn" id="undoBtn" title="Undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h9a7 7 0 017 7v1"/></svg></button>
+      <button class="tool-btn" id="redoBtn" title="Redo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14l5-5-5-5"/><path d="M20 9h-9a7 7 0 00-7 7v1"/></svg></button>
+      <button class="tool-btn" id="splitBtn" title="Split at playhead"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="6" cy="7" r="2.5"/><circle cx="6" cy="17" r="2.5"/><path d="M8.2 8.6L20 20M8.2 15.4L20 4"/></svg></button>
+      <button class="tool-btn" id="dupBtn" title="Duplicate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 14V5a2 2 0 012-2h9"/></svg></button>
+      <button class="tool-btn" id="delBtn" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 4h4M7 7l1 13a2 2 0 002 2h4a2 2 0 002-2l1-13"/><path d="M10 11v6M14 11v6"/></svg></button>
+      <button class="tool-btn on" id="magnetBtn" title="Snapping"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 4h4v7a3 3 0 006 0V4h4v7a7 7 0 01-14 0z"/><path d="M5 8.5h4M15 8.5h4"/></svg></button>
+      <div class="sp"></div>
+      <div class="zoom">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21M8 11h6"/></svg>
+        <input type="range" id="zoomRange" min="40" max="260" value="110" aria-label="Timeline zoom" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21M11 8v6M8 11h6"/></svg>
+      </div>
     </div>
     <div class="tl-main">
-      <div class="tl-heads" id="tlHeads">
-        <div class="tl-ruler-space"></div>
-        <div class="tl-head"><button title="Lock">🔒</button><button title="Show/hide">👁</button><button title="Mute">🔈</button></div>
-        <div class="tl-head"><button title="Lock">🔒</button><button title="Show/hide">👁</button><button title="Mute">🔈</button></div>
-        <div class="tl-head"><button title="Lock">🔒</button><button title="Show/hide">👁</button><button title="Mute">🔈</button></div>
-        <div class="tl-head"><button title="Lock">🔒</button><button title="Show/hide">👁</button><button title="Mute">🔈</button></div>
-        <div class="tl-head audio"><button title="Lock">🔒</button><button title="Show/hide">👁</button><button title="Mute">🔈</button></div>
-      </div>
+      <div class="tl-heads" id="tlHeads"></div>
       <div class="tl-scroll" id="tlScroll">
-        <div class="tl-inner" id="tlInner">
+        <div class="tl-inner" id="tlInner" style="width:1320px">
           <div class="tl-ruler" id="tlRuler"></div>
-          <div class="tl-lane" data-lane="fx">
-            <div class="clip fx" data-start="8"   data-dur="95">✦ <span>Sport Effects</span></div>
-            <div class="clip fx" data-start="205" data-dur="95">✦ <span>Sport Effects</span></div>
-          </div>
-          <div class="tl-lane" data-lane="cap">
-            <div class="clip cap" data-start="52"  data-dur="42" data-cap="Come on superman say it stupid line"><span>Come on superman say it stupid line</span></div>
-            <div class="clip cap" data-start="100" data-dur="44" data-cap="Don't suppose you could convince your lov"><span>Don't suppose you could convince your lov</span></div>
-            <div class="clip cap" data-start="150" data-dur="42" data-cap="She said: 'It's not now or never'"><span>She said: "It's not now or never"</span></div>
-            <div class="clip cap" data-start="198" data-dur="44" data-cap="Superman, don't hold back jus"><span>Superman, don't hold back jus</span></div>
-          </div>
-          <div class="tl-lane" data-lane="vid">
-            <div class="clip vid" data-start="58" data-dur="120"><span>🎞 happy-happy.mp4</span></div>
-          </div>
-          <div class="tl-lane" data-lane="vid2">
-            <div class="clip vid" data-start="172" data-dur="64"><span>🎞 b-roll.mp4</span></div>
-          </div>
-          <div class="tl-lane audio" data-lane="aud">
-            <div class="clip aud" data-start="0" data-dur="360">
-              <div class="wave" id="wave"></div>
-              <span class="clabel">♪ Happy Song.mp3</span>
-            </div>
-          </div>
-          <div class="playhead" id="playhead" style="left:134px"></div>
+          <div id="tlLanes"></div>
+          <div class="playhead" id="playhead" style="left:0"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- export modal -->
+  <!-- EXPORT MODAL -->
   <div class="modal-veil" id="exportModal">
-    <div class="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Export video">
       <h2>Export video</h2>
-      <p>Render in the cloud — keep editing, we'll notify you when it's ready.</p>
-      <div class="exp-row" id="resRow">
-        <div class="exp-opt" data-res="720p">720p</div>
-        <div class="exp-opt on" data-res="1080p">1080p</div>
-        <div class="exp-opt" data-res="4K">4K</div>
+      <p>Renders your timeline in real time and downloads a <b>.webm</b> file with audio.</p>
+      <div class="exp-row" id="expRow">
+        <button class="exp-opt on">720p</button>
+        <button class="exp-opt">1080p</button>
       </div>
       <div class="exp-bar" id="expBar"><i id="expFill"></i></div>
       <div class="exp-status" id="expStatus"></div>
       <div style="display:flex;gap:10px;margin-top:18px">
         <button class="btn btn-light" id="expCancel" style="flex:1">Cancel</button>
-        <button class="btn btn-dark" id="expStart" style="flex:2">Start export</button>
+        <button class="btn btn-brand" id="expStart" style="flex:2">Start export</button>
       </div>
     </div>
   </div>
+
+  <!-- hidden file input + custom context menu -->
+  <input type="file" id="fileInput" accept="video/*,audio/*,image/*" multiple hidden />
+  <div class="ctxmenu" id="ctxMenu" role="menu"></div>
 
   <div class="toast" id="toast"></div>
   <script src="main.js"></script>
